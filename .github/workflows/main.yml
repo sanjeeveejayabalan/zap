@@ -1,34 +1,23 @@
-name: Java CI with Maven
+name: ci.yml
 
 on:
   push:
     branches:
-      - main  # Change this to your branch name
-  pull_request:
-    branches:
-      - main  # Change this to your branch name
+      - master
 
 jobs:
-  build:
-
-    runs-on: ubuntu-latest
+  Gitleaks-scan:
+    runs-on: Ubuntu-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
+      - name: Checkout Repository
+        uses: actions/checkout@v2
 
-    - name: Set up JDK 11
-      uses: actions/setup-java@v2
-      with:
-        java-version: '11'  # Change to your desired JDK version
+      - name: Install Gitleaks
+        run: |
+          wget https://github.com/zricethezav/gitleaks/releases/download/v7.4.1/gitleaks-linux-amd64
+          chmod +x gitleaks-linux-amd64
+          sudo mv gitleaks-linux-amd64 /usr/local/bin/gitleaks
 
-    - name: Cache Maven packages
-      uses: actions/cache@v2
-      with:
-        path: ~/.m2/repository
-        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-        restore-keys: |
-          ${{ runner.os }}-maven-
-
-    - name: Build with Maven
-      run: mvn -B clean package --file pom.xml
+      - name: Run Gitleaks
+        run: gitleaks detect --source . --log-opts="--all commitA..commitB  
