@@ -19,6 +19,6 @@ jobs:
           chmod +x gitleaks-linux-amd64
           sudo mv gitleaks-linux-amd64 /usr/local/bin/gitleaks
 
-      - name: Run Gitleaks
+      - name: Run Gitleaks Scan
         run: gitleaks detect --source . --log-opts="--all commitA..commitB  
 
