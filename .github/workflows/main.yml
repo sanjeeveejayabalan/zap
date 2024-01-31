@@ -33,7 +33,7 @@ jobs:
     
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Set up JDK
         uses: actions/setup-java@v2
@@ -49,3 +49,25 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+  dependency-track-scan:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Run Dependency-Check
+        run: |
+          wget https://github.com/jeremylong/DependencyCheck/releases/download/v7.0.0/dependency-check-7.0.0-release.zip
+          unzip dependency-check-7.0.0-release.zip
+          java -jar dependency-check/bin/dependency-check.sh --scan . --format "ALL" --project "Your_Project_Name" --out /tmp/dependency-check-report
+          
+      - name: Display Dependency-Track report
+        run: cat /tmp/dependency-check-report/dependency-check-report.json
+
+      - name: Upload Dependency-Track report
+        uses: actions/upload-artifact@v2
+        with:
+          name: dependency-track-report
+          path: /tmp/dependency-check-report        
