@@ -23,9 +23,6 @@ jobs:
        run: |
           gitleaks --verbose --path=. --report=gitleaks-report.txt
 
-    - name: Display report
-      run: cat gitleaks-report.txt
-
     - name: Upload gitleaks report
       if: failure()
       uses: actions/upload-artifact@v2
