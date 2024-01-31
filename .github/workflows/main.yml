@@ -30,7 +30,6 @@ jobs:
           name: gitleaks-report
           path: gitleaks-report.txt
           
-jobs:
   sonarqube-scan:
     runs-on: ubuntu-latest
     
