@@ -1,4 +1,4 @@
-name: ci.yml
+name: Gitleaks Scan
 
 on:
   push:
@@ -6,19 +6,26 @@ on:
       - main
 
 jobs:
-  Gitleaks-scan:
-    runs-on: Ubuntu-latest
+  gitleaks-scan:
+    runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
+      - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Install Gitleaks
+      - name: Install gitleaks
         run: |
-          wget https://github.com/zricethezav/gitleaks/releases/download/v7.4.1/gitleaks-linux-amd64
-          chmod +x gitleaks-linux-amd64
-          sudo mv gitleaks-linux-amd64 /usr/local/bin/gitleaks
+          wget https://github.com/zricethezav/gitleaks/releases/download/v7.4.1/gitleaks-linux-amd64 -O gitleaks
+          chmod +x gitleaks
+          sudo mv gitleaks /usr/local/bin/
 
-      - name: Run Gitleaks Scan
-        run: gitleaks detect --source . --log-opts="--all commitA..commitB  
+      - name: Run gitleaks scan
+        run: |
+          gitleaks --verbose
 
+      - name: Upload gitleaks report
+        if: failure()
+        uses: actions/upload-artifact@v2
+        with:
+          name: gitleaks-report
+          path: gitleaks-report.txt
