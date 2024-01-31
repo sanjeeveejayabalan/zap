@@ -1,4 +1,4 @@
-name: ci.yml
+name: Gitleaks Scan
 
 on:
   push:
@@ -19,13 +19,13 @@ jobs:
           chmod +x gitleaks
           sudo mv gitleaks /usr/local/bin/
 
-     - name: Run gitleaks scan
-       run: |
+      - name: Run gitleaks scan
+        run: |
           gitleaks --verbose --path=. --report=gitleaks-report.txt
-
-    - name: Upload gitleaks report
-      if: failure()
-      uses: actions/upload-artifact@v2
-      with:
-        name: gitleaks-report
-        path: gitleaks-report.txt
+ 
+      - name: Upload gitleaks report
+        if: failure()
+        uses: actions/upload-artifact@v2
+        with:
+          name: gitleaks-report
+          path: gitleaks-report.txt
