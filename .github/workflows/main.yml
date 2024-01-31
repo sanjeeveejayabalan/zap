@@ -1,6 +1,7 @@
 name: ci.yml
 
 on:
+  pull_request:
   push:
     branches:
       - main
@@ -22,13 +23,10 @@ jobs:
       - name: Run gitleaks scan
         run: |
           gitleaks --verbose --path=. --report=gitleaks-report.txt
- 
-      - name: Upload gitleaks report
-        if: failure()
-        uses: actions/upload-artifact@v2
-        with:
-          name: gitleaks-report
-          path: gitleaks-report.txt
+          
+      - name: Display Gitleaks report
+        run: cat gitleaks-report.txt
+
           
   sonarqube-scan:
     runs-on: ubuntu-latest
