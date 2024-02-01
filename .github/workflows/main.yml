@@ -72,8 +72,7 @@ jobs:
           name: dependency-track-report
           path: /tmp/dependency-check-report  
 
-  jobs:
-  build:
+  dependency-track-scan1:
     runs-on: ubuntu-latest
 
     steps:
