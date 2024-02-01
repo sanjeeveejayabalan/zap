@@ -50,8 +50,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
  
-
-  dependency-track-scan1:
+  dependency Scan:
     runs-on: ubuntu-latest
 
     steps:
@@ -62,10 +61,20 @@ jobs:
       uses: actions/setup-java@v2
       with:
         distribution: 'adopt'
-        java-version: '11'  # Adjust the Java version as needed
+        java-version: '11'
 
-    - name: Make script executable
-      run: chmod +x dependency-check/bin/dependency-check.sh
+    - name: Run Dependency-Check
+      run: |
+        wget https://dl.bintray.com/jeremy-long/owasp/dependency-check-6.0.3-release.zip
+        unzip dependency-check-6.0.3-release.zip
+        cd dependency-check/bin/
+        chmod +x dependency-check.sh
+        ./dependency-check.sh -s . -f JSON -o /path/to/report
 
-    - name: Run Dependency Check
-      run: ./dependency-check/bin/dependency-check.sh      
+    - name: Upload to Dependency-Track
+      run: |
+        curl -X POST \
+          -F "file=@/path/to/report/dependency-check-report.json" \
+          -H "Authorization: YOUR_API_KEY" \
+          https://your-dependency-track-instance/api/v1/scan
+      
