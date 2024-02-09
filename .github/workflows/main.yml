@@ -1,7 +1,6 @@
-name: ci.yml
+name: Gitleaks Scan
 
 on:
-  pull_request:
   push:
     branches:
       - main
@@ -19,62 +18,12 @@ jobs:
           wget https://github.com/zricethezav/gitleaks/releases/download/v7.4.1/gitleaks-linux-amd64 -O gitleaks
           chmod +x gitleaks
           sudo mv gitleaks /usr/local/bin/
-
       - name: Run gitleaks scan
         run: |
-          gitleaks --verbose --path=. --report=gitleaks-report.txt
-          
-      - name: Display Gitleaks report
-        run: cat gitleaks-report.txt
-
-          
-  sonarqube-scan:
-    runs-on: ubuntu-latest
-    
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Set up JDK
-        uses: actions/setup-java@v2
+          gitleaks --verbose
+      - name: Upload gitleaks report
+        if: failure()
+        uses: actions/upload-artifact@v2
         with:
-          distribution: 'adopt'
-          java-version: '11'
-
-      - name: Build with Maven
-        run: mvn clean install -B
-
-      - name: SonarQube Scan
-        uses: sonarsource/sonarcloud-github-action@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
- 
-  dependency-Scan:
-    runs-on: ubuntu-latest
-    
-    steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v2
-
-    - name: Set up Java
-      uses: actions/setup-java@v2
-      with:
-        distribution: 'adopt'
-        java-version: '11'
-
-    - name: Run Dependency-Check
-      run: |
-        wget https://dl.bintray.com/jeremy-long/owasp/dependency-check-6.0.3-release.zip
-        unzip dependency-check-6.0.3-release.zip
-        cd dependency-check/bin/
-        chmod +x dependency-check.sh
-        ./dependency-check.sh -s . -f JSON -o /path/to/report
-
-    - name: Upload to Dependency-Track
-      run: |
-        curl -X POST \
-          -F "file=@/path/to/report/dependency-check-report.json" \
-          -H "Authorization: YOUR_API_KEY" \
-          https://your-dependency-track-instance/api/v1/scan
-      
+          name: gitleaks-report
+          path: gitleaks-report.txt
