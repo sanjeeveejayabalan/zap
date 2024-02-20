@@ -3,7 +3,7 @@ on: [pull_request, push, workflow_dispatch]
 
 jobs:
   Zap-Scan:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     
     steps:
       - name: Run ZAP Full Scan
@@ -12,7 +12,7 @@ jobs:
           target: https://www.shabdkosh.com # Replace with your target URL
           output: report_html.html  # Specify the output file name for XML report
 
-      - name: Install tidy
+      - name: run Install tidy
         run: sudo apt-get update && sudo apt-get install -y tidy
 
       - name: Convert HTML to XML using tidy
