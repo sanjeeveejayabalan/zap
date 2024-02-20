@@ -13,10 +13,10 @@ jobs:
           output: report_html.html  # Specify the output file name for XML report
 
       - name: Install tidy
-        run:  apt-get install tidy -y
+        run:  sudo apt-get install tidy -y
       
       - name: Convert HTML to XML
-        run: tidy -q -asxml --numeric-entities yes report_html.html >file.xml
+        run: sudo tidy -q -asxml --numeric-entities yes report_html.html >file.xml
           
       - name: list
         run: |
