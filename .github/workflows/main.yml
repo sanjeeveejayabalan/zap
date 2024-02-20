@@ -1,29 +1,25 @@
-name: Gitleaks Scan
-
-on:
-  push:
-    branches:
-      - main
+name: ci.yml
+on: [pull_request, push, workflow_dispatch]
 
 jobs:
-  gitleaks-scan:
+  Zap-Scan:
     runs-on: ubuntu-latest
-
+    
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
-      - name: Install gitleaks
-        run: |
-          wget https://github.com/zricethezav/gitleaks/releases/download/v7.4.1/gitleaks-linux-amd64 -O gitleaks
-          chmod +x gitleaks
-          sudo mv gitleaks /usr/local/bin/
-      - name: Run gitleaks scan
-        run: |
-          gitleaks --verbose
-      - name: Upload gitleaks report
-        if: failure()
-        uses: actions/upload-artifact@v2
+      - name: Run ZAP Full Scan
+        uses: zaproxy/action-baseline@master
         with:
-          name: gitleaks-report
-          path: gitleaks-report.txt
+          target: https://devsecopsvm.m2pfintech.com # Replace with your target URL
+          output: report_html.html  # Specify the output file name for XML report
+
+      - name: Install tidy
+        run:  apt-get install tidy -y
+      
+      - name: Convert HTML to XML
+        run: tidy -q -asxml --numeric-entities yes report_html.html >file.xml
+          
+      - name: list
+        run: |
+          ls 
+          cat file.xml        
+              
