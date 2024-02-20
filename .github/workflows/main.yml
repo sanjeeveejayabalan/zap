@@ -9,7 +9,7 @@ jobs:
       - name: Run ZAP Full Scan
         uses: zaproxy/action-baseline@master
         with:
-          target: https://devsecopsvm.m2pfintech.com # Replace with your target URL
+          target: https://www.shabdkosh.com # Replace with your target URL
           output: report_html.html  # Specify the output file name for XML report
 
       - name: Install tidy
