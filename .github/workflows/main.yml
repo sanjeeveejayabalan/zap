@@ -3,7 +3,7 @@ name: ci.yml
 on:
   push:
     branches:
-      - main
+      - zapscan
 jobs:
   Zap-Scan:
     runs-on: ubuntu-latest
