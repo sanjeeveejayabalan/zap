@@ -18,7 +18,7 @@ jobs:
         uses: zaproxy/action-baseline@master
         with:
           target: https://www.shabdkosh.com
-          # fail_action: false
+          fail_action: false
           cmd_options: "-x report_xml.xml"
           
       - name: list
