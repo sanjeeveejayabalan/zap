@@ -10,10 +10,10 @@ jobs:
     
     steps:
       - name: ZAP Scan  
-        uses: zaproxy/action-baseline@v0.10.0
+        uses: naveen2131/action:zap
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          docker_name: 'naveen2131/action:zap'
+          # docker_name: 'naveen2131/action:zap'
           target: 'https://localhost:3000'
           rules_file_name: '.zap/rules.tsv'
           cmd_options: '-a -x'
