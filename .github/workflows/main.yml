@@ -10,7 +10,7 @@ jobs:
     
     steps:
       - name: ZAP Scan  
-        uses: naveen2131/action:zap
+        uses: sanjeeveejayabalan/action:zap
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           # docker_name: 'naveen2131/action:zap'
