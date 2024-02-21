@@ -9,23 +9,24 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-        
       - name: Run ZAP Full Scan
         uses: zaproxy/action-baseline@master
         with:
-          target: https://www.shabdkosh.com # Replace with your target URL
-          output: report_html.html  # Specify the output file name for XML report
-
-      - name: run Install tidy
-        run: sudo apt-get install -y tidy
-
-      - name: Convert HTML to XML using tidy
-        run: tidy -q -xml -o output.xml report_html.html
+          target: https://devsecopsvm.m2pfintech.com 
+          output: report_json.json
           
       - name: list
         run: |
           ls 
-          cat output.xml       
+          cat report_json.json         
+          
+      - name: Convert JSON to XML
+        run: |
+          jq -r 'def json2xml: . as $in | reduce keys_unsorted[] as $key (""; . + "<\($key)>\($in[$key] | if type == \"object\" then json2xml else . end)</\($key)>") | json2xml' report_json.json > output.xml
+        working-directory: ${{ github.workspace }}
+                 
+      - name: list
+        run: |
+          ls 
+          cat output.xml     
               
