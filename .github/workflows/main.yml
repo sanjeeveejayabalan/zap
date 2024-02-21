@@ -12,7 +12,7 @@ jobs:
       - name: Run ZAP Full Scan
         uses: zaproxy/action-baseline@master
         with:
-          target: https://devsecopsvm.m2pfintech.com 
+          target: https://www.shabdkosh.com
           output: report_json.json
           
       - name: list
