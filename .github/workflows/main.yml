@@ -13,10 +13,10 @@ jobs:
         uses: actions/checkout@v2
 
       - name: ZAP Scan
-        uses: sanjeeveejayabalan/action:zap
+        uses: sanjeeveejayabalan/action@latest
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          target: 'https://www.zaproxy.org/'
+          target: 'https://www.zaproxy.org'
           rules_file_name: '.zap/rules.tsv'
           cmd_options: '-a'
             
