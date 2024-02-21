@@ -13,26 +13,26 @@ jobs:
         uses: zaproxy/action-baseline@v0.10.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          docker_name: 'docker.io/naveen2131/action:latest'
-          target: 'https://aasifebiriyani.com'
+          docker_name: 'naveen2131/action:latest'
+          target: 'https://localhost:3000'
           rules_file_name: '.zap/rules.tsv'
           cmd_options: '-a -x'
             
-      - name: Checkout repository
-        uses: actions/checkout@v2
+      # - name: Checkout repository
+      #   uses: actions/checkout@v2
         
-      - name: Install tidy
-        run: sudo apt-get install -y tidy
+      # - name: Install tidy
+      #   run: sudo apt-get install -y tidy
         
-      - name: Convert HTML to XML
-        run: |
-          tidy -asxml report_html.html > output.xml
-        working-directory: ${{ github.workspace }}
+      # - name: Convert HTML to XML
+      #   run: |
+      #     tidy -asxml report_html.html > output.xml
+      #   working-directory: ${{ github.workspace }}
         
-      - name: Commit XML file
-        uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-          commit_message: "Convert HTML to XML"
-          file_pattern: "output.xml"     
+      # - name: Commit XML file
+      #   uses: stefanzweifel/git-auto-commit-action@v4
+      #   with:
+      #     commit_message: "Convert HTML to XML"
+      #     file_pattern: "output.xml"     
               
               
