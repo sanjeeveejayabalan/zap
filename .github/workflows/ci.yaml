@@ -1,0 +1,22 @@
+name: Tenable Scan
+
+on:
+  push:
+    branches:
+      - zap
+
+jobs:
+  tenable_scan:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Run Tenable Scan
+        uses: tenable/github-action@v1
+        with:
+          api-key: 6d4b4c86f88450f83b9e6aff8d6e99b3d815a848fbf99930a081551e5afd46d4
+          targets: "172.184.25.111,172.184.29.120,172.184.30.49,172.184.73.25,172.184.25.213,172.184.24.198,172.184.24.202,172.184.25.55"
+          options: --scan-type web
+          output: "scan_results.txt"
